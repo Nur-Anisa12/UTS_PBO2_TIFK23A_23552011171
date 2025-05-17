@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body style="background-color: #faedca;">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-light py-3 animate__animated animate__backInDown"
+        style="background-color: #ffffff; border-bottom: 5px solid #faedca;">
+        <div class="container">
+            <div class="container d-flex justify-content-between align-items-center">
+
+                <!-- Kiri: Username -->
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-user me-2"></i>
+                    <span th:text="${user != null ? user.username : 'Guest'}">Username</span>
+                </div>
+
+                <!-- Tengah: Judul -->
+                <div class="fw-bold fs-5">Todo Apps.</div>
+
+                <!-- Kanan: Logout -->
+                <form th:action="@{/logout}" method="post" class="mb-0">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn btn-link p-0" style="color: black;">
+                        <i class="fas fa-sign-out-alt fs-5"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Notifikasi -->
+    <div id="notification" class="notification"></div>
+
+    <div class="animate__animated animate__fadeIn">
+        <h1>Welcome, Todo Apps!</h1>
+        <p class="subtitle">Let's start working on your task.</p>
+    </div>
+
+    <div class="animate__animated animate__fadeIn">
+        <!-- Tombol Tambah Tugas -->
+        <section class="todo-input-section">
+            <div class="d-flex justify-content-center mb-4">
+                <a th:href="@{/todos/create}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus me-2"></i>Tambah Tugas Baru
+                </a>
+            </div>
+        </section>
+
+        <!-- Container utama -->
+        <div class="container main-container">
+
+            <!-- Filter -->
+            <div class="container mb-3">
+                <form th:action="@{/todos}" method="get" class="d-flex justify-content-end">
+                    <select name="filter" class="form-select w-auto" onchange="this.form.submit()">
+                        <option value="">Semua</option> <!-- Nilai default kosong -->
+                        <option value="completed" th:selected="${filter == 'completed'}">Selesai</option>
+                        <option value="incomplete" th:selected="${filter == 'incomplete'}">Belum Selesai</option>
+                    </select>
+                </form>
+            </div>
+
+            <section class="todo-data-container">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Mata Kuliah</th>
+                                <th>Tanggal Deadline</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="todo : ${todos}">
+                                <td>
+                                    <span th:text="${todo.task}">Nama Tugas</span>
+                                </td>
+                                <td th:text="${#temporals.format(todo.deadline, 'dd-MM-yyyy')}">18-04-2025</td>
+                                <td>
+                                    <span th:if="${todo.completed}" class="badge bg-success">Selesai</span>
+                                    <span th:if="${!todo.completed}" class="badge bg-warning text-dark">Belum
+                                        Selesai</span>
+                                </td>
+                                <td>
+                                    <form th:action="@{/update/{id}(id=${todo.id})}" method="post" class="d-inline">
+                                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                                        <button type="submit" class="btn btn-sm btn-outline-success">
+                                            <span th:if="${todo.completed}">Tandai Belum Selesai</span>
+                                            <span th:if="${!todo.completed}">Tandai Selesai</span>
+                                        </button>
+                                    </form>
+
+                                    <!-- Tombol Edit - ubah menjadi link ke halaman edit -->
+                                    <a th:href="@{/todos/edit/{id}(id=${todo.id})}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        Edit
+                                    </a>
+
+                                    <!-- Link hapus dengan ID terlihat di URL -->
+                                    <a th:href="@{/todos/delete/{id}(id=${todo.id})}"
+                                        class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('Apakah yakin ingin menghapus tugas ini?');">
+                                        Hapus
+                                    </a>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- Empty state -->
+                    <div id="empty-state" class="empty-state text-center" th:if="${#lists.isEmpty(todos)}">
+                        <p class="text-muted">Belum ada tugas. Tambahkan tugas baru!</p>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("To-Do List aktif 🚀");
+
+            // Tambahkan notifikasi untuk interaksi frontend
+            function showNotification(message, type = "success") {
+                let notification = document.getElementById("notification");
+                notification.textContent = message;
+                notification.className = "notification"; // Reset classes
+                notification.classList.add(type);
+                notification.classList.add("show");
+
+                setTimeout(() => {
+                    notification.classList.remove("show");
+                }, 3000);
+            }
+
+            // Script tambahan untuk menampilkan notifikasi pada aktivitas form lainnya
+            const updateForms = document.querySelectorAll("form[action^='/update/']");
+            updateForms.forEach(form => {
+                form.addEventListener("submit", () => {
+                    showNotification("Mengubah status tugas...", "warning");
+                });
+            });
+
+            const deleteForms = document.querySelectorAll("form[action^='/delete/']");
+            deleteForms.forEach(form => {
+                form.addEventListener("submit", (event) => {
+                    // Konfirmasi sudah dipindahkan ke atribut onclick di button
+                    showNotification("Menghapus tugas...", "danger");
+                });
+            });
+
+            // Script untuk flash messages dari server (jika ada)
+            // Check if there's a message in URL parameters or session
+            const urlParams = new URLSearchParams(window.location.search);
+            const serverMessage = urlParams.get('message');
+            const serverMessageType = urlParams.get('type') || "success";
+
+            if (serverMessage) {
+                showNotification(serverMessage, serverMessageType);
+            }
+
+        });
+    </script>
+
+    <footer class="footer">
+        <p>&copy; 2025 To-Do Apps | Created by Nur Anisa 23552011171</p>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Task</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body style="background-color: #faedca;">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-light py-3 animate__animated animate__backInDown"
+        style="background-color: #ffffff; border-bottom: 5px solid #faedca;">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <!-- Kiri: Username -->
+            <div class="d-flex align-items-center">
+                <i class="fas fa-user me-2"></i>
+                <span th:text="${user != null ? user.username : 'Guest'}">Username</span>
+            </div>
+
+            <!-- Tengah: Judul -->
+            <div class="fw-bold fs-5">Todo Apps.</div>
+
+            <!-- Kanan: Logout -->
+            <form th:action="@{/logout}" method="post" class="mb-0">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                <button type="submit" class="btn btn-link p-0" style="color: black;">
+                    <i class="fas fa-sign-out-alt fs-5"></i>
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Container utama -->
+    <div class="container main-container" style="height: 400px;">
+        <!-- Konten Form -->
+        <div class="container mt-5 animate__animated animate__fadeIn">
+            <h1 style="font-size: 30px;">Tambah Tugas Baru</h1>
+
+            <!-- Menampilkan pesan error jika ada -->
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <form th:action="@{/todos/create}" th:object="${todo}" method="post">
+                <div class="mb-3">
+                    <label for="task" class="form-label">Deskripsi Tugas</label>
+                    <input type="text" class="form-control" id="task" th:field="*{task}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="deadline" class="form-label">Deadline</label>
+                    <input type="date" class="form-control" id="deadline" th:field="*{deadline}" required>
+                </div>
+
+                <a th:href="@{/todos}" class="btn btn-secondary ms-2">Batal</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-2"></i>Simpan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer text-center mt-5">
+        <p>&copy; 2025 To-Do Apps | Created by Nur Anisa 23552011171</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFY0KjJ6eYI6ZF1YFwD0nEEz36+5FjTJ0cwF7Bv1zYkNdf/rb7eR0pX8UL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

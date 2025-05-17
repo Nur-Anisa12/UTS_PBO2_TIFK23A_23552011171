@@ -1,0 +1,339 @@
+    /* Reset dasar */
+    body,
+    h1,
+    ul,
+    li,
+    form,
+    input,
+    button {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .navbar {
+        display: flex;
+        align-items: center;
+        background-color: #4BA6A6;
+        /* Warna navbar */
+        padding: 15px 30px;
+        position: relative;
+    }
+
+    .navbar .logo {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .navbar .logo img {
+        width: 40px;
+        /* Sesuaikan ukuran ikon */
+        height: auto;
+        margin-right: 10px;
+        margin-left: 100px;
+    }
+
+    /* Garis putih di bawah navbar */
+    .navbar::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        opacity: 50%;
+        background-color: white;
+    }
+
+    /* Pusatkan Header To-Do List */
+    h1 {
+        color: black;
+        font-size: 45px;
+        margin-top: 50px;
+        text-align: center;
+        /* Pusatkan teks */
+    }
+
+    .subtitle {
+        color: black;
+        font-size: 18px;
+        text-align: center;
+        /* Pusatkan teks */
+        margin-bottom: 20px;
+    }
+
+    .main {
+        flex: 1;
+    }
+
+    /* Container utama */
+    .main-container {
+        flex: 1;
+        background: white;
+        color: black;
+        padding: 20px;
+        border-radius: 15px;
+        margin-left: 330px;
+        margin-top: 20px;
+        width: 870px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Container terpisah untuk data todo */
+    .todo-data-container {
+        display: flex;
+        justify-content: center;
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        width: 830px;
+        margin-top: 10px;
+        max-height: 400px;
+        overflow-y: auto;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-responsive {
+        width: 800px;
+    }
+
+    /* Input field dan tombol tambah */
+    .todo-input-section {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    /* Buat kontainer horizontal */
+    .input-container {
+        display: flex;
+        flex-direction: row;
+        /* default sebenarnya, tapi tambahkan biar pasti */
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    /* Bentuk kapsul */
+    .rounded-input {
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        border-radius: 999px;
+        background-color: white;
+        font-size: 14px;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* Input tugas lebih lebar */
+    #task-input {
+        width: 350px;
+        height: 37px;
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+
+    /* Input deadline lebih pendek */
+    #deadline-input {
+        width: 150px;
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+
+
+    .rounded-input i,
+    .rounded-input span {
+        margin-right: 8px;
+        font-size: 16px;
+    }
+
+
+
+    .submit-button {
+        background-color: #4AA5A9;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 15px;
+        width: 170px;
+        height: 55px;
+    }
+
+    .submit-button:hover {
+        background-color: #FFD65A;
+    }
+
+    /* Optional: Atur ukuran di layar kecil */
+    @media (max-width: 600px) {
+        .input-container {
+            flex-direction: column;
+        }
+    }
+
+    /* Daftar To-Do */
+    ul {
+        list-style: none;
+        margin-top: 15px;
+    }
+
+    li {
+        padding: 12px;
+        margin-bottom: 10px;
+        width: 700px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 8px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+    }
+
+    li:hover {
+        transform: translateY(-2px);
+    }
+
+    li span {
+        word-break: break-word;
+        flex: 1;
+    }
+
+    .completed {
+        text-decoration: line-through;
+        color: #6c757d;
+    }
+
+    .todo-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .action-btn {
+        padding: 6px 12px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .edit-btn {
+        background-color: #FFD65A;
+        color: black;
+        width: 100px;
+        border-radius: 25px;
+    }
+
+    .edit-btn:hover {
+        background-color: #FF9D23;
+        transform: scale(1.05);
+    }
+
+    .complete-btn {
+        background-color: #BF3131;
+        color: white;
+        width: 100px;
+        border-radius: 25px;
+    }
+
+    .complete-btn:hover {
+        background-color: #7D0A0A;
+        transform: scale(1.05);
+    }
+
+    .action-btn:active {
+        transform: scale(0.95);
+    }
+
+    .todo-deadline {
+        display: block;
+        font-size: 12px;
+        color: #888;
+        margin-top: 4px;
+    }
+
+    /* Notifikasi */
+    .notification {
+        position: fixed;
+        top: 20px;
+        padding: 12px 20px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-100px);
+        opacity: 0;
+        transition: all 0.5s ease;
+        z-index: 2000;
+    }
+
+    .notification.show {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .notification.success {
+        background-color: #28a745;
+    }
+
+    .notification.warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .notification.error {
+        background-color: #dc3545;
+    }
+
+    /* Animasi tambahan */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease forwards;
+    }
+
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 30px 0;
+        color: #6c757d;
+    }
+
+    .empty-state p {
+        margin-top: 10px;
+        font-size: 0.9rem;
+    }
+
+    .footer {
+        text-align: center;
+        margin-top: 50px;
+        color: #999;
+    }
