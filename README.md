@@ -36,6 +36,6 @@ mengimplementasikan prinsip-prinsip Pemrograman Berorientasi Objek.</p>
 
 ## Demo Proyek
 <ul>
-  <li>Github: <a href="">Github</a></li>
-  <li>Youtube: <a href="">(https://youtu.be/UTF6IisSD5o)</a></li>
+  <li>Github: <a href="">https://github.com/Nur-Anisa12/UTS_PBO2_TIFK23A_23552011171</a></li>
+  <li>Youtube: <a href="">https://youtu.be/UTF6IisSD5o</a></li>
 </ul>
